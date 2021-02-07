@@ -14,42 +14,69 @@ function HotelsContainer() {
   const [endDate, setEndDate] = useState(undefined);
   const [price, setPrice] = useState(1100);
   async function changeCity(e) {
-    setCity(e.target.value);
-    await search();
+    const city = e.target.value;
+    setCity(city);
+    await search({newCity: city });
   }
   async function changePrice(e) {
-    setPrice(e.target.value);
-    await search();
+    const price =e.target.value 
+    setPrice(price);
+    await search({newPrice: price});
   }
   async function changeMin(e) {
-    setMinSize(e.target.value);
-    await search();
+    const min = e.target.value;
+    setMinSize(min);
+    await search({newMin: min});
   }
   async function changeMax(e) {
-    setMaxSize(e.target.value);
-    await search();
+    const max = e.target.value;
+    setMaxSize(max);
+    await search({newMax: max});
   }
   async function changeStartDate(data) {
     setStartDate(data);
-    await search();
+    await search({newStart: data});
   }
   async function changeEndDate(data) {
     setEndDate(data);
-    await search();
+    await search({newEnd: data});
   }
-  async function search() {
+  async function search({newCity, newStart, newEnd, newMin, newMax, newPrice}) {
     const past = 1412551100952;
     const future = 1812551100952;
-    const start_date = !startDate ? past : new Date(startDate).getTime();
-    const end_date = !endDate ? future : new Date(endDate).getTime();
+    let start_date;
+    let end_date;
+    if(newStart) {
+      start_date = new Date(newStart).getTime();
+    }
+    if(newEnd) {
+      end_date = new Date(newEnd).getTime();
+    }
+    let start;
+    let end;
+    if(startDate) {
+     start = start_date ? start_date : new Date(startDate).getTime(); 
+    }
+    if(endDate) {
+      end = end_date ? end_date : new Date(endDate).getTime(); 
+    }
+    start = start ? start : past;
+    end = end ? end : future
+    // const start = !start_date ? past : new Date(startDate).getTime();
+    // const end = !endDate ? future : new Date(endDate).getTime();
+    const new_city = newCity ? newCity : city;
+    const new_min = newMin ? newMin : minSize;
+    const new_max = newMax ? newMax : maxSize;
+    const new_price = newPrice ? newPrice : price;
     const resp = await fetch(
-      `http://localhost:3001/search?city=${city}&start_date=${start_date}&end_date=${end_date}&min_size=${minSize}&max_size=${maxSize}&max_price=${price}`
+      `http://localhost:3001/search?city=${new_city}&start_date=${start}&end_date=${end}&min_size=${new_min}&max_size=${new_max}&max_price=${new_price}`
     );
     if (resp.ok) {
       const data = await resp.json();
 
       setHotels(data);
     } else {
+      setHotels([]);
     }
   }
   useEffect(() => {
