@@ -10,7 +10,7 @@ import StyledHero from "../components/StyledHero";
 export default function SingleHotel({ match }) {
   const slug = match.params.slug;
   const startDate = match.params.startDate !== "undefined" ? new Date(match.params.startDate): undefined;
-  const endDate = match.params.endDate !== "undefined" ? !new Date(match.params.endDate): undefined;;
+  const endDate = match.params.endDate !== "undefined" ? new Date(match.params.endDate): undefined;;
   const defaultBcg = defaultBcgImg;
   const [hotel, sethotel] = useState(undefined);
   const [loading, setloading] = useState(true);
