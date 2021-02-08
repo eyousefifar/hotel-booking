@@ -96,7 +96,7 @@ export default function SingleHotel({ match }) {
     const checkPhone =
       typeof form.phone === "string" && phoneRegex.test(form.phone);
     const checkRooms =
-      typeof form.rooms === "string" && parseInt(form.rooms) > 1;
+      typeof form.rooms === "string" && parseInt(form.rooms) >= 1;
     const checkArrival = typeof form.arrival !== "undefined";
     const checkDeparture = typeof form.departure !== "undefined";
     setValidation({
